@@ -1,11 +1,17 @@
 import {StyleSheet, Text, View} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import Router from './src/Router';
+import {NativeBaseProvider} from 'native-base';
+import {CustomTheme} from 'styles';
 
 const App = () => {
   return (
-    <View>
-      <Text>App</Text>
-    </View>
+    <NavigationContainer>
+      <NativeBaseProvider theme={CustomTheme as any}>
+        <Router />
+      </NativeBaseProvider>
+    </NavigationContainer>
   );
 };
 

@@ -1,12 +1,12 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
+import PublicRoutes from './routes/Public';
+import PrivateRoutes from './routes/Private';
 
 const Router = () => {
-  return (
-    <View>
-      <Text>Router</Text>
-    </View>
-  );
+  const [isLoggedIn, setIsLoggeedIn] = React.useState(false);
+
+  return <>{isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}</>;
 };
 
 export default Router;
