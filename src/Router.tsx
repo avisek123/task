@@ -4,7 +4,7 @@ import PublicRoutes from './routes/Public';
 import PrivateRoutes from './routes/Private';
 
 const Router = () => {
-  const [isLoggedIn, setIsLoggeedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggeedIn] = React.useState(true);
 
   return <>{isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}</>;
 };
