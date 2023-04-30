@@ -8,6 +8,7 @@ export type PublicStackParams = {
 export type PrivateStackParams = {
   BottomTab: undefined;
   Home: undefined;
+  Products: undefined;
 };
 export type PublicNavigationProps =
   NativeStackNavigationProp<PublicStackParams>;

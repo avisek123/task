@@ -18,15 +18,18 @@ import {PrivateNavigationProps} from 'src/types/allRoutes';
 import {SCREEN_WIDTH} from 'utils';
 import {useProducts} from 'hooks';
 
-const NewArrival = ({name}: any) => {
+const NewArrival = () => {
   const {products} = useProducts();
   const {navigate} = useNavigation<PrivateNavigationProps>();
 
   return (
     <Box mt={5}>
       <Row px={4} justifyContent={'space-between'}>
-        <Heading fontSize={15}>{name ?? 'New Arrival Products'}</Heading>
+        <Heading fontSize={15}>{'New Arrival Products'}</Heading>
         <Icon
+          onPress={() => {
+            navigate('Products');
+          }}
           color={'#000'}
           size={5}
           alignSelf={'center'}

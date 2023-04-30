@@ -83,7 +83,7 @@ export default function AnimTab3() {
       label: 'Products',
       type: MIcon,
       icon: 'view-dashboard-outline',
-      component: Private.Home,
+      component: Private.Products,
       color: COLORS.PRIMARY,
       alphaClr: '#637aff00',
     },
