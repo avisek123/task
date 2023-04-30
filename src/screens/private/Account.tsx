@@ -21,7 +21,7 @@ import {onScroll} from 'utils';
 import {useNavigation} from '@react-navigation/native';
 import {PrivateNavigationProps} from 'src/types/allRoutes';
 import {useBasicFunction} from 'hooks';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Account = () => {
   const navigation = useNavigation<PrivateNavigationProps>();
   const {handleLogout} = useBasicFunction();
