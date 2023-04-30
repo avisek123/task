@@ -1,8 +1,8 @@
 import {extendTheme} from 'native-base';
 
 const COLORS = {
-  PRIMARY: '#E41C36',
-  SECONDARY: '#5A5B5A',
+  PRIMARY: '#c84e94',
+  SECONDARY: '#0A9BDE',
 };
 export default COLORS;
 
