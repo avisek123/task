@@ -4,12 +4,15 @@ import React from 'react';
 import Router from './src/Router';
 import {NativeBaseProvider} from 'native-base';
 import {CustomTheme} from 'styles';
+import {AppContextProvider} from 'contexts';
 
 const App = () => {
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={CustomTheme as any}>
-        <Router />
+        <AppContextProvider>
+          <Router />
+        </AppContextProvider>
       </NativeBaseProvider>
     </NavigationContainer>
   );

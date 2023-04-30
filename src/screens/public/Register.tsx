@@ -10,8 +10,41 @@ import COLORS from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useBasicFunction} from 'hooks';
 const Register = () => {
   const {navigate} = useNavigation<PublicNavigationProps>();
+  const {handleLogin, handleSetName} = useBasicFunction();
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [IsSecureEntry, setIsSecureEntry] = React.useState(false);
+  // const [isLoading, setIsLoading] = React.useState(false);
+  // const handleRegister = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await fetch('https://e-commerce-wutt.onrender.com/register', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({email, password}),
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error('Network res was not ok');
+  //     }
+  //     const result = await res.json();
+  //     console.log('result', result);
+  //   } catch (error) {
+  //     console.error('Error fetching products:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  const handleRegister = () => {
+    handleSetName(name);
+    handleLogin();
+    console.log('ff');
+  };
   return (
     <SafeAreaView style={styles.screenWrapping}>
       <ScrollView
@@ -28,8 +61,8 @@ const Register = () => {
               Name*
             </Text>
             <Input
-              //   value={name}
-              //   onChangeText={txt => setName(txt)}
+              value={name}
+              onChangeText={txt => setName(txt)}
               placeholder="Enter your name"
               borderRadius={10}
               focusOutlineColor="#000"
@@ -45,8 +78,8 @@ const Register = () => {
               Email*
             </Text>
             <Input
-              //   value={email}
-              //   onChangeText={txt => setEmail(txt)}
+              value={email}
+              onChangeText={txt => setEmail(txt)}
               placeholder="Enter your email"
               borderRadius={10}
               focusOutlineColor="#000"
@@ -62,9 +95,9 @@ const Register = () => {
               Password*
             </Text>
             <Input
-              //   value={password}
-              //   secureTextEntry={IsSecureEntry}
-              //   onChangeText={txt => setPassword(txt)}
+              value={password}
+              secureTextEntry={IsSecureEntry}
+              onChangeText={txt => setPassword(txt)}
               placeholder="Enter your Password"
               placeholderTextColor={'grey'}
               fontSize={14}
@@ -75,10 +108,9 @@ const Register = () => {
               mt={2}
               InputRightElement={
                 <TouchableOpacity
-                // onPress={() => {
-                //   setIsSecureEntry(prev => !prev);
-                // }}
-                >
+                  onPress={() => {
+                    setIsSecureEntry(prev => !prev);
+                  }}>
                   <Ionicons
                     name={'eye-outline'}
                     size={26}
@@ -90,10 +122,9 @@ const Register = () => {
           </VStack>
 
           <Button
-            // isDisabled={!name || !email || !phoneNumber || !password}
-            // onPress={handleSubmit}
+            isDisabled={!name || !email || !password}
+            onPress={handleRegister}
             mt={'8'}
-            // isLoading={isLoading}
             alignSelf={'center'}
             fontWeight="semibold"
             w={'100%'}

@@ -5,3 +5,5 @@ export type {
   PrivateStackParams,
   PrivateRootRouteProps,
 } from './allRoutes';
+
+export type {ProductType} from './ProductType';

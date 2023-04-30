@@ -1,26 +1,17 @@
 import React from 'react';
-import {
-  Box,
-  FlatList,
-  Heading,
-  Icon,
-  Image,
-  Pressable,
-  Row,
-  Text,
-} from 'native-base';
-import COLORS from 'styles';
+import {Box, FlatList, Heading, Icon, Row} from 'native-base';
 import AntD from 'react-native-vector-icons/AntDesign';
-
-import {useNavigation} from '@react-navigation/native';
-import {PrivateNavigationProps} from 'src/types/allRoutes';
-import {SCREEN_WIDTH} from 'utils';
-import {useProducts, useTopTrendingProducts} from 'hooks';
+import {useTopTrendingProducts} from 'hooks';
+import {ProductCard} from 'components';
+import {ListRenderItem} from 'react-native';
+import {ProductType} from 'types';
 
 const TopTrendingProducts = () => {
   const {topTrending} = useTopTrendingProducts();
-  const {navigate} = useNavigation<PrivateNavigationProps>();
-
+  const renderItem: ListRenderItem<ProductType> = ({item}) => {
+    // Render each item here
+    return <ProductCard item={item} />;
+  };
   return (
     <Box mt={5}>
       <Row px={4} justifyContent={'space-between'}>
@@ -40,32 +31,7 @@ const TopTrendingProducts = () => {
           windowSize={6}
           showsHorizontalScrollIndicator={false}
           horizontal
-          renderItem={({item}: any) => (
-            <Pressable ml={2} mr={2} width={SCREEN_WIDTH / 3.5}>
-              <Image
-                height={'32'}
-                width="100%"
-                resizeMode={'contain'}
-                alt="image base"
-                source={{uri: item?.image}}
-              />
-              <Text
-                mt={1}
-                fontSize={10}
-                numberOfLines={2}
-                textAlign="center"
-                alignSelf={'center'}>
-                {item?.title}
-              </Text>
-              <Text
-                fontWeight={'semibold'}
-                textAlign={'center'}
-                fontSize={11}
-                color={COLORS.PRIMARY}>
-                ₹2999
-              </Text>
-            </Pressable>
-          )}
+          renderItem={renderItem}
         />
       </Box>
     </Box>

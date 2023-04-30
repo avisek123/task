@@ -48,7 +48,6 @@ const data = [
 const UserDashboard = () => {
   const navigation = useNavigation<PrivateNavigationProps>();
   const {products} = useProducts();
-  console.log('products', products);
 
   return (
     <Box flex={1} bgColor="#fff">
