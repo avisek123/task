@@ -10,8 +10,13 @@ import COLORS from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useBasicFunction} from 'hooks';
 const Login = () => {
+  const {handleLogin} = useBasicFunction();
   const {navigate, goBack} = useNavigation<PublicNavigationProps>();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [IsSecureEntry, setIsSecureEntry] = React.useState(false);
   return (
     <SafeAreaView style={styles.screenWrapping}>
       <ScrollView
@@ -37,8 +42,8 @@ const Login = () => {
               Email*
             </Text>
             <Input
-              //   value={email}
-              //   onChangeText={txt => setEmail(txt)}
+              value={email}
+              onChangeText={txt => setEmail(txt)}
               placeholder="Enter your email"
               borderRadius={10}
               focusOutlineColor="#000"
@@ -54,9 +59,9 @@ const Login = () => {
               Password*
             </Text>
             <Input
-              //   value={password}
-              //   secureTextEntry={IsSecureEntry}
-              //   onChangeText={txt => setPassword(txt)}
+              value={password}
+              secureTextEntry={IsSecureEntry}
+              onChangeText={txt => setPassword(txt)}
               placeholder="Enter your Password"
               placeholderTextColor={'grey'}
               fontSize={14}
@@ -67,10 +72,9 @@ const Login = () => {
               mt={2}
               InputRightElement={
                 <TouchableOpacity
-                // onPress={() => {
-                //   setIsSecureEntry(prev => !prev);
-                // }}
-                >
+                  onPress={() => {
+                    setIsSecureEntry(prev => !prev);
+                  }}>
                   <Ionicons
                     name={'eye-outline'}
                     size={26}
@@ -82,10 +86,9 @@ const Login = () => {
           </VStack>
 
           <Button
-            // isDisabled={!name || !email || !phoneNumber || !password}
-            // onPress={handleSubmit}
+            isDisabled={!email || !password}
+            onPress={handleLogin}
             mt={'8'}
-            // isLoading={isLoading}
             alignSelf={'center'}
             fontWeight="semibold"
             w={'100%'}

@@ -87,6 +87,15 @@ export default function AnimTab3() {
       color: COLORS.PRIMARY,
       alphaClr: '#637aff00',
     },
+    {
+      route: 'Account',
+      label: 'Account',
+      type: Ionicons,
+      icon: 'person-outline',
+      component: Private.Account,
+      color: COLORS.PRIMARY,
+      alphaClr: '#637aff00',
+    },
   ];
 
   return (

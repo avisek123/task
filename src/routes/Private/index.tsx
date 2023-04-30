@@ -27,6 +27,13 @@ const PrivateRoutes = () => {
         name="Products"
         component={Private.Products}
       />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Account"
+        component={Private.Account}
+      />
     </Stack.Navigator>
   );
 };

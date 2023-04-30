@@ -43,7 +43,6 @@ const Register = () => {
   const handleRegister = () => {
     handleSetName(name);
     handleLogin();
-    console.log('ff');
   };
   return (
     <SafeAreaView style={styles.screenWrapping}>
