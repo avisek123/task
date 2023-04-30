@@ -29,7 +29,7 @@ const ProductCard = ({item}: {item: ProductType}) => {
           textAlign={'center'}
           fontSize={11}
           color={COLORS.PRIMARY}>
-          ₹2999
+          ${item?.price}
         </Text>
       </Pressable>
     </>
