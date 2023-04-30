@@ -8,8 +8,10 @@ import {useNavigation} from '@react-navigation/native';
 // import NewArrival from './NewArrival';
 // import TopTrending from './TopTrending';
 
-// import Slider from './Slider';
 import {PrivateNavigationProps} from 'src/types/allRoutes';
+import {useProducts} from 'hooks';
+import NewArrival from './NewArrival';
+import TopTrendingProducts from './TopTrendingProducts';
 
 const data = [
   {
@@ -45,6 +47,8 @@ const data = [
 ];
 const UserDashboard = () => {
   const navigation = useNavigation<PrivateNavigationProps>();
+  const {products} = useProducts();
+  console.log('products', products);
 
   return (
     <Box flex={1} bgColor="#fff">
@@ -74,9 +78,8 @@ const UserDashboard = () => {
           </ScrollView>
         </Box>
         <Slider />
-        {/* <Slider />
         <NewArrival />
-        <TopTrending /> */}
+        <TopTrendingProducts />
       </ScrollView>
     </Box>
   );

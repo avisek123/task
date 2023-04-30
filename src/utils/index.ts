@@ -1,8 +1,10 @@
 import {Dimensions} from 'react-native';
 import {tabBarStyle} from 'styles';
+export const BASE_URL = 'https://e-commerce-wutt.onrender.com/';
 export const DimensionWidth = Dimensions.get('window').width;
 export const DimensionHeight = Dimensions.get('window').height;
 export const SCREEN_HEIGHT = Dimensions.get('screen').height;
+export const SCREEN_WIDTH = Dimensions.get('screen').width;
 var scroll = 0;
 export const onScroll = (e: any, navigation: any, notHide?: any) => {
   if (notHide) return;
