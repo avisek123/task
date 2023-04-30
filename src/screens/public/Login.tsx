@@ -1,4 +1,5 @@
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,12 +12,31 @@ import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useBasicFunction} from 'hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = () => {
   const {handleLogin} = useBasicFunction();
   const {navigate, goBack} = useNavigation<PublicNavigationProps>();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [IsSecureEntry, setIsSecureEntry] = React.useState(false);
+  const [name, setName] = React.useState('');
+  const getAuthData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('name');
+      // console.log('value', value);
+      if (value) {
+        setName(value);
+      } else {
+        setName('');
+      }
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
+  React.useEffect(() => {
+    getAuthData();
+  }, []);
+
   return (
     <SafeAreaView style={styles.screenWrapping}>
       <ScrollView

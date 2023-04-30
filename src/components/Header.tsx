@@ -5,28 +5,11 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Header = () => {
-  const [name, setName] = React.useState('');
-  const getAuthData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('name');
-      // console.log('value', value);
-      if (value) {
-        setName(value);
-      } else {
-        setName('');
-      }
-    } catch (e) {
-      console.log('error', e);
-    }
-  };
-  React.useEffect(() => {
-    getAuthData();
-  }, []);
   return (
     <Box shadow={2} p={3} bgColor="#fff">
       <Row justifyContent={'space-between'}>
         <Text numberOfLines={1} width={200} fontSize={20} bold>
-          Hello {name}
+          Hello User ,
         </Text>
 
         <Row>

@@ -25,23 +25,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Account = () => {
   const navigation = useNavigation<PrivateNavigationProps>();
   const {handleLogout} = useBasicFunction();
-  const [name, setName] = React.useState('');
-  const getAuthData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('name');
-      // console.log('value', value);
-      if (value) {
-        setName(value);
-      } else {
-        setName('');
-      }
-    } catch (e) {
-      console.log('error', e);
-    }
-  };
-  React.useEffect(() => {
-    getAuthData();
-  }, []);
 
   const data = [
     {
@@ -125,7 +108,7 @@ const Account = () => {
               <Text fontSize={13} color={'gray.400'}>
                 Welcome
               </Text>
-              <Text>{name}</Text>
+              <Text>{'User'}</Text>
             </VStack>
             <Icon
               alignSelf={'center'}

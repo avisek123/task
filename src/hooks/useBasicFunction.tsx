@@ -11,12 +11,6 @@ const useBasicFunctions = () => {
       })
       .catch(error => console.log(error));
   };
-  const handleSetName = (name: string) => {
-    AsyncStorage.setItem('name', name).catch(error => console.log(error));
-  };
-  const handleRemoveName = (name: string) => {
-    AsyncStorage.setItem('name', '').catch(error => console.log(error));
-  };
 
   const handleLogout = async () => {
     try {
@@ -29,8 +23,6 @@ const useBasicFunctions = () => {
   return {
     handleLogin,
     handleLogout,
-    handleSetName,
-    handleRemoveName,
   };
 };
 export default useBasicFunctions;
