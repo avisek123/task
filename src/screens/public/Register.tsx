@@ -13,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useBasicFunction} from 'hooks';
 const Register = () => {
   const {navigate} = useNavigation<PublicNavigationProps>();
-  const {handleLogin, handleSetName} = useBasicFunction();
+  const {handleLogin} = useBasicFunction();
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -41,7 +41,6 @@ const Register = () => {
   //   }
   // };
   const handleRegister = () => {
-    handleSetName(name);
     handleLogin();
   };
   return (
