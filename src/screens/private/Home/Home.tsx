@@ -1,89 +1,89 @@
-import {StyleSheet} from 'react-native';
-import React from 'react';
-import {Avatar, Box, Pressable, Row, ScrollView, Text} from 'native-base';
-import {Header, Slider} from 'components';
-import {DimensionWidth, onScroll} from 'utils';
-import {useNavigation} from '@react-navigation/native';
+import {ChooseAttendance} from 'components';
+import {
+  useDisclose,
+  Actionsheet,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Text,
+} from 'native-base';
+import React, {useEffect, useState} from 'react';
+import {Calendar} from 'react-native-calendars';
+import COLORS from 'styles';
 
-// import NewArrival from './NewArrival';
-// import TopTrending from './TopTrending';
+const Home = () => {
+  const [selected, setSelected] = useState<any>(null);
+  const [selectDay, setSelectDay] = React.useState<any>();
+  const [attendance, setAttendance] = useState({});
+  const {onOpen, isOpen, onClose} = useDisclose();
+  const handleDayPress = (day: any) => {
+    const newAttendance = {
+      ...attendance,
+      [day.dateString]: {marked: true, dotColor: 'green'},
+    };
+    const newAttendance1 = {
+      ...attendance,
+      [day.dateString]: {marked: true, dotColor: 'red'},
+    };
+    console.log('selected', selected ? 'green' : 'red');
 
-import {PrivateNavigationProps} from 'src/types/allRoutes';
-import {useProducts} from 'hooks';
-import NewArrival from './NewArrival';
-import TopTrendingProducts from './TopTrendingProducts';
-
-const data = [
-  {
-    id: 1,
-    img: 'https://media.istockphoto.com/id/180807014/photo/casual-man-in-red-t-shirt.jpg?b=1&s=170667a&w=0&k=20&c=y_csZmdd_4Tkex6Ag7Y6Kfwb3RUBjZ6Ccw6MWRAKvHk=',
-    title: 'T-Shirts',
-    type: 'tshirt',
-  },
-  {
-    id: 2,
-    img: 'https://media.istockphoto.com/id/1256292058/photo/condom-and-medical-pills-in-a-pocket-of-blue-jeans.jpg?s=612x612&w=is&k=20&c=keaqDnnkCn3YrOJlFrt_RZDsTufjWSVmSm6OslMboqY=',
-    title: 'Jeans',
-    type: 'jean',
-  },
-  {
-    id: 3,
-    img: 'https://imagescdn.louisphilippe.com/img/app/product/8/803253-9508295.jpg?auto=format',
-    title: 'Shirts',
-    type: '',
-  },
-  {
-    id: 4,
-    img: 'https://imagescdn.allensolly.com/img/app/product/7/720552-7969102.jpg?auto=format',
-    title: 'Trousers',
-    type: 'tro',
-  },
-  {
-    id: 5,
-    img: 'https://assets.ajio.com/medias/sys_master/root/20211123/1qA7/619bee0af997ddf8f11282af/-473Wx593H-441125677-navy-MODEL.jpg',
-    title: 'Shorts',
-    type: 'short',
-  },
-];
-const UserDashboard = () => {
-  const navigation = useNavigation<PrivateNavigationProps>();
-  const {products} = useProducts();
+    selected ? setAttendance(newAttendance) : setAttendance(newAttendance1);
+  };
+  console.log('selected', selected);
 
   return (
-    <Box flex={1} bgColor="#fff">
-      <Header />
-      <ScrollView onScroll={e => onScroll(e, navigation)}>
-        {/* categories */}
-        <Box pr={2} pl={3} pt={3} pb={3}>
-          <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-            <Row>
-              {data?.map(item => (
-                <Pressable width={DimensionWidth / 5.1} key={item?.id}>
-                  <Box ml={1} w={16}>
-                    <Avatar
-                      source={{
-                        uri: item?.img,
-                      }}
-                      borderColor="#000"
-                      borderWidth={0.3}
-                    />
-                    <Text ml={2} fontSize={11}>
-                      {item?.title}
-                    </Text>
-                  </Box>
-                </Pressable>
-              ))}
-            </Row>
-          </ScrollView>
+    <>
+      <Calendar
+        markedDates={attendance}
+        onDayPress={day => {
+          onOpen();
+          setSelectDay(day);
+        }}
+      />
+      <Actionsheet isOpen={isOpen} onClose={onClose}>
+        <Box alignSelf={'flex-start'} p="3">
+          <Heading>Delete Account</Heading>
+          <Text textAlign={'justify'} mt={2}>
+            If you are sure you want to delete your account, your account will
+            be deleted and you will no longer be able to access your account.
+          </Text>
         </Box>
-        <Slider />
-        <NewArrival />
-        <TopTrendingProducts />
-      </ScrollView>
-    </Box>
+        <HStack justifyContent={'space-between'} w={'100%'}>
+          <Button
+            onPress={() => {
+              setSelected(false);
+              handleDayPress(selectDay);
+              onClose();
+            }}
+            _text={{
+              color: COLORS.PRIMARY,
+              bold: true,
+            }}
+            backgroundColor={'#fff'}
+            borderColor={COLORS.PRIMARY}
+            borderWidth={1}
+            w={'45%'}>
+            Cancel
+          </Button>
+          <Button
+            onPress={() => {
+              setSelected(true);
+              handleDayPress(selectDay);
+              onClose();
+            }}
+            backgroundColor={COLORS.PRIMARY}
+            _text={{
+              color: '#fff',
+              bold: true,
+            }}
+            w={'45%'}>
+            Continue
+          </Button>
+        </HStack>
+      </Actionsheet>
+    </>
   );
 };
 
-export default UserDashboard;
-
-const styles = StyleSheet.create({});
+export default Home;

@@ -8,23 +8,23 @@ import Loader from './components/Loader';
 
 const Router = () => {
   const {isLoggedIn, setIsLoggedIn} = useAppContext();
-  const getAuthData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('isLoggedIn');
-      // console.log('value', value);
-      if (value === 'true') {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    } catch (e) {
-      console.log('error', e);
-    }
-  };
+  // const getAuthData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('isLoggedIn');
+  //     // console.log('value', value);
+  //     if (value === 'true') {
+  //       setIsLoggedIn(true);
+  //     } else {
+  //       setIsLoggedIn(false);
+  //     }
+  //   } catch (e) {
+  //     console.log('error', e);
+  //   }
+  // };
 
-  React.useEffect(() => {
-    getAuthData();
-  }, [isLoggedIn]);
+  // React.useEffect(() => {
+  //   getAuthData();
+  // }, [isLoggedIn]);
   if (isLoggedIn === null) return <Loader />;
   return <>{isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}</>;
 };

@@ -7,7 +7,7 @@ type AppContextProviderProps = {
 };
 
 export default ({children}: AppContextProviderProps) => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<unknown>(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState<unknown>(true);
 
   return (
     <AppContext.Provider
