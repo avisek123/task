@@ -1,33 +1,33 @@
 import {StyleSheet} from 'react-native';
 import React from 'react';
-import {Box, Icon, Row, Text} from 'native-base';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Box, Button, Row, Text} from 'native-base';
+import {useAppContext} from 'contexts';
+import {useBasicFunction, useFirebase} from 'hooks';
 
 const Header = () => {
+  const {user} = useAppContext();
+  const {logout} = useFirebase();
   return (
-    <Box shadow={2} p={3} bgColor="#fff">
+    <Box
+      borderBottomColor={'gray.500'}
+      borderBottomWidth={0.5}
+      shadow={2}
+      p={3}
+      bgColor="#fff">
       <Row justifyContent={'space-between'}>
-        <Text numberOfLines={1} width={200} fontSize={20} bold>
-          Hello User ,
-        </Text>
+        <Box>
+          <Text numberOfLines={1} width={200} fontSize={17} bold>
+            Hello ,
+          </Text>
+          <Text numberOfLines={1} width={230} fontSize={17} bold>
+            {user}
+          </Text>
+        </Box>
 
         <Row>
-          <Icon
-            color="#000"
-            alignSelf={'center'}
-            size={5}
-            mr={4}
-            as={<Ionicon name="ios-search-outline" />}
-          />
-
-          <Icon
-            color="#000"
-            alignSelf={'center'}
-            size={5}
-            mr={4}
-            as={<Ionicon name="notifications-outline" />}
-          />
+          <Button onPress={logout} h={10}>
+            Logout
+          </Button>
         </Row>
       </Row>
     </Box>

@@ -8,11 +8,6 @@ const Stack = createNativeStackNavigator<PrivateStackParams>();
 const PrivateRoutes = () => {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen
-        name="BottomTab"
-        component={BottomTab}
-        options={{headerShown: false}}
-      /> */}
       <Stack.Screen
         options={{
           headerShown: false,
