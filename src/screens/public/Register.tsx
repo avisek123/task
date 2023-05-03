@@ -1,4 +1,5 @@
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,6 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useFirebase} from 'hooks';
+import {FIREBASE_ERRORS} from 'utils';
 
 const Register = () => {
   const {navigate, goBack} = useNavigation<PublicNavigationProps>();
@@ -25,8 +27,10 @@ const Register = () => {
     try {
       setLoader(true);
       await signup(email, password);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error?.code && error.code in FIREBASE_ERRORS['en'])
+        return Alert.alert('Error', FIREBASE_ERRORS['en'][error.code]);
+      Alert.alert('Error', FIREBASE_ERRORS['en']['auth/something-went-wrong']);
     } finally {
       setLoader(false);
     }

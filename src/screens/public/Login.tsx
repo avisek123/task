@@ -1,4 +1,5 @@
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -24,8 +25,10 @@ const Login = () => {
     try {
       setLoader(true);
       await login(email, password);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error?.code && error.code in FIREBASE_ERRORS['en'])
+        return Alert.alert('Error', FIREBASE_ERRORS['en'][error.code]);
+      Alert.alert('Error', FIREBASE_ERRORS['en']['auth/something-went-wrong']);
     } finally {
       setLoader(false);
     }
