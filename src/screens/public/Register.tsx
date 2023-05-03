@@ -11,13 +11,13 @@ import COLORS from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useBasicFunction, useFirebase} from 'hooks';
-import auth from '@react-native-firebase/auth';
+import {useFirebase} from 'hooks';
+
 const Register = () => {
   const {navigate} = useNavigation<PublicNavigationProps>();
-  const {handleLogin} = useBasicFunction();
+
   const {signup} = useFirebase();
-  const [name, setName] = React.useState('');
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [IsSecureEntry, setIsSecureEntry] = React.useState(false);

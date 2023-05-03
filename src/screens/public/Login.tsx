@@ -10,7 +10,7 @@ import COLORS from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useBasicFunction, useFirebase} from 'hooks';
+import {useFirebase} from 'hooks';
 import {FIREBASE_ERRORS} from 'utils';
 
 const Login = () => {
