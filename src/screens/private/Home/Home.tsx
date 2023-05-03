@@ -1,4 +1,5 @@
 import {ChooseAttendance} from 'components';
+import {useAppContext} from 'contexts';
 import {
   useDisclose,
   Actionsheet,
@@ -13,6 +14,7 @@ import {Calendar} from 'react-native-calendars';
 import COLORS from 'styles';
 
 const Home = () => {
+  const {user} = useAppContext();
   const [selected, setSelected] = useState<any>(null);
   const [selectDay, setSelectDay] = React.useState<any>();
   const [attendance, setAttendance] = useState({});
@@ -33,7 +35,8 @@ const Home = () => {
   console.log('selected', selected);
 
   return (
-    <>
+    <Box flex={1} bgColor={'#fff'}>
+      <Text>{user}</Text>
       <Calendar
         markedDates={attendance}
         onDayPress={day => {
@@ -82,7 +85,7 @@ const Home = () => {
           </Button>
         </HStack>
       </Actionsheet>
-    </>
+    </Box>
   );
 };
 

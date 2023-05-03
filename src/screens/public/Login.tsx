@@ -10,15 +10,26 @@ import COLORS from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useBasicFunction} from 'hooks';
+import {useBasicFunction, useFirebase} from 'hooks';
+import {FIREBASE_ERRORS} from 'utils';
 
 const Login = () => {
-  const {handleLogin} = useBasicFunction();
+  const {login} = useFirebase();
   const {navigate, goBack} = useNavigation<PublicNavigationProps>();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loader, setLoader] = React.useState(false);
   const [IsSecureEntry, setIsSecureEntry] = React.useState(false);
-
+  const handleLogin = async () => {
+    try {
+      setLoader(true);
+      await login(email, password);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
+  };
   return (
     <SafeAreaView style={styles.screenWrapping}>
       <ScrollView
@@ -90,6 +101,7 @@ const Login = () => {
           <Button
             isDisabled={!email || !password}
             onPress={handleLogin}
+            isLoading={loader}
             mt={'8'}
             alignSelf={'center'}
             fontWeight="semibold"

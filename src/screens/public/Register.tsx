@@ -3,6 +3,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import {Box, Button, Input, Text, VStack} from 'native-base';
@@ -10,38 +11,26 @@ import COLORS from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {PublicNavigationProps} from 'src/types/allRoutes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useBasicFunction} from 'hooks';
+import {useBasicFunction, useFirebase} from 'hooks';
+import auth from '@react-native-firebase/auth';
 const Register = () => {
   const {navigate} = useNavigation<PublicNavigationProps>();
   const {handleLogin} = useBasicFunction();
+  const {signup} = useFirebase();
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [IsSecureEntry, setIsSecureEntry] = React.useState(false);
-  // const [isLoading, setIsLoading] = React.useState(false);
-  // const handleRegister = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await fetch('https://e-commerce-wutt.onrender.com/register', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({email, password}),
-  //     });
-  //     if (!res.ok) {
-  //       throw new Error('Network res was not ok');
-  //     }
-  //     const result = await res.json();
-  //     console.log('result', result);
-  //   } catch (error) {
-  //     console.error('Error fetching products:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  const handleRegister = () => {
-    handleLogin();
+  const [loader, setLoader] = React.useState(false);
+  const handleRegister = async () => {
+    try {
+      setLoader(true);
+      const res = await signup(email, password);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
   };
   return (
     <SafeAreaView style={styles.screenWrapping}>
@@ -55,23 +44,6 @@ const Register = () => {
           <Text fontWeight={'medium'}>Create your account to continue.</Text>
 
           <VStack mt={8}>
-            <Text fontSize={16} fontWeight="medium">
-              Name*
-            </Text>
-            <Input
-              value={name}
-              onChangeText={txt => setName(txt)}
-              placeholder="Enter your name"
-              borderRadius={10}
-              focusOutlineColor="#000"
-              placeholderTextColor={'grey'}
-              fontSize={14}
-              backgroundColor={'#fff'}
-              borderWidth={1}
-              autoCapitalize={'none'}
-              mt={2}
-            />
-
             <Text mt={4} fontSize={16} fontWeight="medium">
               Email*
             </Text>
@@ -120,8 +92,9 @@ const Register = () => {
           </VStack>
 
           <Button
-            isDisabled={!name || !email || !password}
+            isDisabled={!email || !password}
             onPress={handleRegister}
+            isLoading={loader}
             mt={'8'}
             alignSelf={'center'}
             fontWeight="semibold"
