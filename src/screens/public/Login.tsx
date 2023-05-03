@@ -35,15 +35,6 @@ const Login = () => {
       <ScrollView
         style={styles.AuthContainer}
         showsVerticalScrollIndicator={false}>
-        <TouchableOpacity
-          onPress={goBack}
-          style={{
-            position: 'absolute',
-            top: '2%',
-            left: '1%',
-          }}>
-          <Ionicons size={30} color={'#000'} name="arrow-back-outline" />
-        </TouchableOpacity>
         <Box px={2} mt={'32'}>
           <Text bold fontSize={25}>
             Login
@@ -105,8 +96,7 @@ const Login = () => {
             mt={'8'}
             alignSelf={'center'}
             fontWeight="semibold"
-            w={'100%'}
-            backgroundColor={COLORS.PRIMARY}>
+            w={'100%'}>
             <Text bold color={'white'}>
               Login
             </Text>

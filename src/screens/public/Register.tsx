@@ -3,7 +3,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import React from 'react';
 import {Box, Button, Input, Text, VStack} from 'native-base';
@@ -14,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useFirebase} from 'hooks';
 
 const Register = () => {
-  const {navigate} = useNavigation<PublicNavigationProps>();
+  const {navigate, goBack} = useNavigation<PublicNavigationProps>();
 
   const {signup} = useFirebase();
 
@@ -25,7 +24,7 @@ const Register = () => {
   const handleRegister = async () => {
     try {
       setLoader(true);
-      const res = await signup(email, password);
+      await signup(email, password);
     } catch (error) {
       console.log(error);
     } finally {
@@ -37,6 +36,15 @@ const Register = () => {
       <ScrollView
         style={styles.AuthContainer}
         showsVerticalScrollIndicator={false}>
+        <TouchableOpacity
+          onPress={goBack}
+          style={{
+            position: 'absolute',
+            top: '2%',
+            left: '1%',
+          }}>
+          <Ionicons size={30} color={'#000'} name="arrow-back-outline" />
+        </TouchableOpacity>
         <Box px={2} mt={20}>
           <Text bold fontSize={25}>
             Register
@@ -98,8 +106,7 @@ const Register = () => {
             mt={'8'}
             alignSelf={'center'}
             fontWeight="semibold"
-            w={'100%'}
-            backgroundColor={COLORS.PRIMARY}>
+            w={'100%'}>
             <Text bold color={'white'}>
               Register
             </Text>
