@@ -8,12 +8,14 @@ import {
   HStack,
   Text,
   VStack,
+  Row,
 } from 'native-base';
 import React, {useEffect, useState} from 'react';
-import {PermissionsAndroid, Platform} from 'react-native';
+import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
-import COLORS from 'styles';
 import {Header} from 'components';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import moment from 'moment';
 
 const Home = () => {
   const [selected, setSelected] = useState<any>(null);
@@ -31,11 +33,9 @@ const Home = () => {
       ...attendance,
       [day.dateString]: {marked: true, dotColor: 'red'},
     };
-    console.log('selected', selected ? 'green' : 'red');
 
     selected ? setAttendance(newAttendance) : setAttendance(newAttendance1);
   };
-  console.log('selected', selected);
 
   const androidPermission = async () => {
     try {
@@ -102,6 +102,7 @@ const Home = () => {
       <Header />
       <Calendar
         markedDates={attendance}
+        minDate={moment().format('YYYY-MM-DD')}
         onDayPress={day => {
           onOpen();
           setSelectDay(day);
@@ -118,45 +119,49 @@ const Home = () => {
         </VStack>
       </Box>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
-        <Box alignSelf={'flex-start'} p="3">
-          <Heading>Delete Account</Heading>
-          <Text textAlign={'justify'} mt={2}>
-            If you are sure you want to delete your account, your account will
-            be deleted and you will no longer be able to access your account.
-          </Text>
-        </Box>
-        <HStack justifyContent={'space-between'} w={'100%'}>
-          <Button
-            onPress={() => {
-              setSelected(false);
-              handleDayPress(selectDay);
-              onClose();
-            }}
-            _text={{
-              color: COLORS.PRIMARY,
-              bold: true,
-            }}
-            backgroundColor={'#fff'}
-            borderColor={COLORS.PRIMARY}
-            borderWidth={1}
-            w={'45%'}>
-            Cancel
-          </Button>
-          <Button
-            onPress={() => {
-              setSelected(true);
-              handleDayPress(selectDay);
-              onClose();
-            }}
-            backgroundColor={COLORS.PRIMARY}
-            _text={{
-              color: '#fff',
-              bold: true,
-            }}
-            w={'45%'}>
-            Continue
-          </Button>
-        </HStack>
+        <Actionsheet.Content style={{backgroundColor: '#fff', padding: 10}}>
+          <Box alignSelf={'flex-start'} p="3">
+            <Row justifyContent={'space-between'}>
+              <Heading>Mark Your Attendance</Heading>
+              <TouchableOpacity onPress={onClose}>
+                <AntDesign color={'red'} name="close" size={23} />
+              </TouchableOpacity>
+            </Row>
+
+            <Text mt={2}>
+              Please click either the "Absent" or "Present" button to indicate
+              your attendance status .
+            </Text>
+          </Box>
+          <HStack justifyContent={'space-between'} w={'100%'}>
+            <Button
+              onPress={() => {
+                setSelected(false);
+                handleDayPress(selectDay);
+                onClose();
+              }}
+              _text={{
+                bold: true,
+              }}
+              variant={'outline'}
+              w={'45%'}>
+              Present
+            </Button>
+            <Button
+              onPress={() => {
+                setSelected(true);
+                handleDayPress(selectDay);
+                onClose();
+              }}
+              _text={{
+                color: '#fff',
+                bold: true,
+              }}
+              w={'45%'}>
+              Absent
+            </Button>
+          </HStack>
+        </Actionsheet.Content>
       </Actionsheet>
     </Box>
   );
