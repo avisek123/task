@@ -29,18 +29,17 @@ const Home = () => {
   useEffect(() => {
     isMounted.current = true;
     const handleDayPress = (day: any) => {
-      const newAttendance = {
-        ...attendance,
-        [day?.dateString]: {marked: true, dotColor: 'green'},
-      };
-      const newAttendance1 = {
-        ...attendance,
-        [day?.dateString]: {marked: true, dotColor: 'red'},
-      };
       console.log(selected ? 'green' : 'red');
       if (selected === null) return;
-      if (selected && !isOpen) return setAttendance(newAttendance);
-      return setAttendance(newAttendance1);
+      if (selected)
+        return setAttendance(pre => ({
+          ...pre,
+          [day?.dateString]: {marked: true, dotColor: 'green'},
+        }));
+      return setAttendance(pre => ({
+        ...pre,
+        [day?.dateString]: {marked: true, dotColor: 'red'},
+      }));
     };
 
     handleDayPress(selectDay);
@@ -48,7 +47,7 @@ const Home = () => {
       setSelected(null);
       isMounted.current = false;
     };
-  }, [selected, selectDay, !isOpen]);
+  }, [selected, selectDay]);
 
   const androidPermission = async () => {
     try {
