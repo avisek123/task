@@ -10,7 +10,7 @@ import {
   VStack,
   Row,
 } from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {Header} from 'components';
@@ -23,19 +23,32 @@ const Home = () => {
   const [address, setAddress] = React.useState();
   const [selectDay, setSelectDay] = React.useState<any>();
   const [attendance, setAttendance] = useState({});
+  const isMounted = useRef(false);
   const {onOpen, isOpen, onClose} = useDisclose();
-  const handleDayPress = (day: any) => {
-    const newAttendance = {
-      ...attendance,
-      [day.dateString]: {marked: true, dotColor: 'green'},
-    };
-    const newAttendance1 = {
-      ...attendance,
-      [day.dateString]: {marked: true, dotColor: 'red'},
+
+  useEffect(() => {
+    isMounted.current = true;
+    const handleDayPress = (day: any) => {
+      const newAttendance = {
+        ...attendance,
+        [day?.dateString]: {marked: true, dotColor: 'green'},
+      };
+      const newAttendance1 = {
+        ...attendance,
+        [day?.dateString]: {marked: true, dotColor: 'red'},
+      };
+      console.log(selected ? 'green' : 'red');
+      if (selected === null) return;
+      if (selected && !isOpen) return setAttendance(newAttendance);
+      return setAttendance(newAttendance1);
     };
 
-    selected ? setAttendance(newAttendance) : setAttendance(newAttendance1);
-  };
+    handleDayPress(selectDay);
+    return () => {
+      setSelected(null);
+      isMounted.current = false;
+    };
+  }, [selected, selectDay, !isOpen]);
 
   const androidPermission = async () => {
     try {
@@ -62,7 +75,6 @@ const Home = () => {
   useEffect(() => {
     if (Platform.OS === 'android') {
       androidPermission();
-      console.log('hello');
     } else {
       // IOS
       setHasPermission(true);
@@ -89,7 +101,6 @@ const Home = () => {
         },
 
         error => {
-          // See error code charts below.
           console.log(error.code, error.message);
         },
         {enableHighAccuracy: true, timeout: 15000},
@@ -136,8 +147,8 @@ const Home = () => {
           <HStack justifyContent={'space-between'} w={'100%'}>
             <Button
               onPress={() => {
-                setSelected(false);
-                handleDayPress(selectDay);
+                setSelected(true);
+
                 onClose();
               }}
               _text={{
@@ -149,8 +160,8 @@ const Home = () => {
             </Button>
             <Button
               onPress={() => {
-                setSelected(true);
-                handleDayPress(selectDay);
+                setSelected(false);
+
                 onClose();
               }}
               _text={{
