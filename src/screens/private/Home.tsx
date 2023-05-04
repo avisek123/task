@@ -10,7 +10,7 @@ import {
   VStack,
   Row,
 } from 'native-base';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {Header} from 'components';
@@ -23,11 +23,10 @@ const Home = () => {
   const [address, setAddress] = React.useState();
   const [selectDay, setSelectDay] = React.useState<any>();
   const [attendance, setAttendance] = useState({});
-  const isMounted = useRef(false);
   const {onOpen, isOpen, onClose} = useDisclose();
 
   useEffect(() => {
-    isMounted.current = true;
+    let isMount = true;
     const handleDayPress = (day: any) => {
       console.log(selected ? 'green' : 'red');
       if (selected === null) return;
@@ -43,9 +42,9 @@ const Home = () => {
     };
 
     handleDayPress(selectDay);
+    isMount && setSelected(null);
     return () => {
-      setSelected(null);
-      isMounted.current = false;
+      isMount = false;
     };
   }, [selected, selectDay]);
 
