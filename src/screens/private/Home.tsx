@@ -1,179 +1,131 @@
-import Geolocation from 'react-native-geolocation-service';
-import {
-  useDisclose,
-  Actionsheet,
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Text,
-  VStack,
-  Row,
-} from 'native-base';
-import React, {useEffect, useState} from 'react';
-import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
-import {Calendar} from 'react-native-calendars';
-import {Header} from 'components';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import moment from 'moment';
+import React, {useState} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 const Home = () => {
-  const [selected, setSelected] = useState<any>(null);
-  const [hasPermission, setHasPermission] = useState(false);
-  const [address, setAddress] = React.useState();
-  const [selectDay, setSelectDay] = React.useState<any>();
-  const [attendance, setAttendance] = useState({});
-  const {onOpen, isOpen, onClose} = useDisclose();
-
-  useEffect(() => {
-    let isMount = true;
-    const handleDayPress = (day: any) => {
-      console.log(selected ? 'green' : 'red');
-      if (selected === null) return;
-      if (selected)
-        return setAttendance(pre => ({
-          ...pre,
-          [day?.dateString]: {marked: true, dotColor: 'green'},
-        }));
-      return setAttendance(pre => ({
-        ...pre,
-        [day?.dateString]: {marked: true, dotColor: 'red'},
-      }));
-    };
-
-    handleDayPress(selectDay);
-    isMount && setSelected(null);
-    return () => {
-      isMount = false;
-    };
-  }, [selected, selectDay]);
-
-  const androidPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Permission',
-          message: 'App needs access to your location',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        setHasPermission(true);
-        console.log('You can use the location');
-      } else {
-        console.log('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
+  const [activeDate, setActiveDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
+  const _onPress = (item: any) => {
+    if (!item.match && item != -1) {
+      activeDate.setDate(item);
+      setActiveDate(new Date(activeDate));
     }
   };
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      androidPermission();
-    } else {
-      // IOS
-      setHasPermission(true);
-      Geolocation.requestAuthorization('always');
+
+  const changeMonth = (n: any) => {
+    const newDate = new Date(
+      activeDate.getFullYear(),
+      activeDate.getMonth() + n,
+      1,
+    );
+    setActiveDate(newDate);
+    const newDate1 = new Date(date.setMonth(date.getMonth() + n));
+    setDate(newDate1);
+  };
+
+  const generateMatrix = () => {
+    const matrix = [];
+    // Create header
+    matrix[0] = weekDays;
+
+    const year = activeDate.getFullYear();
+    const month = activeDate.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+
+    let maxDays = nDays[month];
+    if (month === 1) {
+      // February
+      if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+        maxDays += 1;
+      }
     }
-  }, []);
 
-  useEffect(() => {
-    if (hasPermission) {
-      Geolocation.getCurrentPosition(
-        position => {
-          const {latitude, longitude} = position.coords;
-          console.log(latitude);
-          console.log(longitude);
-          const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-
-          fetch(url)
-            .then(response => response.json())
-            .then(json => {
-              const addressComponent = json.display_name;
-              console.log('addressComponent', addressComponent);
-              setAddress(addressComponent);
-            });
-        },
-
-        error => {
-          console.log(error.code, error.message);
-        },
-        {enableHighAccuracy: true, timeout: 15000},
-      );
+    let counter = 1;
+    for (let row = 1; row < 7; row++) {
+      matrix[row] = [];
+      for (let col = 0; col < 7; col++) {
+        matrix[row][col] = -1;
+        if (row === 1 && col >= firstDay) {
+          // Fill in rows only after the first day of the month
+          matrix[row][col] = counter++;
+        } else if (row > 1 && counter <= maxDays) {
+          // Fill in rows only if the counter's not greater than
+          // the number of days in the month
+          matrix[row][col] = counter++;
+        }
+      }
     }
-  }, [hasPermission]);
+
+    return matrix;
+  };
+
+  const matrix = generateMatrix();
+
+  const rows = matrix.map((row, rowIndex) => {
+    const rowItems = row.map((item, colIndex) => (
+      <Text
+        key={`${rowIndex}_${colIndex}`}
+        style={{
+          flex: 1,
+          height: 18,
+          textAlign: 'center',
+          // Highlight header
+          // backgroundColor: rowIndex === 0 ? '#ddd' : '#fff',
+          // Highlight Sundays
+          color: colIndex === 0 ? '#a00' : '#000',
+          // Highlight current date
+          fontWeight: item === activeDate.getDate() ? 'bold' : '',
+        }}
+        onPress={() => _onPress(item)}>
+        {item !== -1 ? item : ''}
+      </Text>
+    ));
+
+    return (
+      <View
+        key={rowIndex}
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          padding: 15,
+          justifyContent: 'space-around',
+          alignItems: 'center',
+        }}>
+        {rowItems}
+      </View>
+    );
+  });
 
   return (
-    <Box flex={1} bgColor={'#fff'}>
-      <Header />
-      <Calendar
-        markedDates={attendance}
-        minDate={moment().format('YYYY-MM-DD')}
-        onDayPress={day => {
-          onOpen();
-          setSelectDay(day);
+    <View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity onPress={() => changeMonth(-1)}>
+          <MaterialIcons name="chevron-left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text>
+          {date.toLocaleString('default', {month: 'long', year: 'numeric'})}
+        </Text>
+        <TouchableOpacity onPress={() => changeMonth(1)}>
+          <MaterialIcons name="chevron-right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          fontSize: 18,
         }}
       />
-      <Box ml={5} mr={5} p={4} borderWidth={1} my={5} borderStyle={'dashed'}>
-        <VStack justifyContent={'space-between'}>
-          <Text textAlign={'center'} fontWeight={'medium'}>
-            My Location
-          </Text>
-          <Text mt={3} fontSize={12} textAlign={'justify'}>
-            {address}.
-          </Text>
-        </VStack>
-      </Box>
-      <Actionsheet isOpen={isOpen} onClose={onClose}>
-        <Actionsheet.Content style={{backgroundColor: '#fff', padding: 10}}>
-          <Box alignSelf={'flex-start'} p="3">
-            <Row justifyContent={'space-between'}>
-              <Heading>Mark Your Attendance</Heading>
-              <TouchableOpacity onPress={onClose}>
-                <AntDesign color={'red'} name="close" size={23} />
-              </TouchableOpacity>
-            </Row>
-
-            <Text mt={2}>
-              Please click either the "Absent" or "Present" button to indicate
-              your attendance status .
-            </Text>
-          </Box>
-          <HStack justifyContent={'space-between'} w={'100%'}>
-            <Button
-              onPress={() => {
-                setSelected(true);
-
-                onClose();
-              }}
-              _text={{
-                bold: true,
-              }}
-              variant={'outline'}
-              w={'45%'}>
-              Present
-            </Button>
-            <Button
-              onPress={() => {
-                setSelected(false);
-
-                onClose();
-              }}
-              _text={{
-                color: '#fff',
-                bold: true,
-              }}
-              w={'45%'}>
-              Absent
-            </Button>
-          </HStack>
-        </Actionsheet.Content>
-      </Actionsheet>
-    </Box>
+      {rows}
+    </View>
   );
 };
-
 export default Home;
