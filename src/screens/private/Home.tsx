@@ -66,15 +66,14 @@ const Home = () => {
   const matrix = generateMatrix();
 
   const rows = matrix.map((row, rowIndex) => {
-    const rowItems = row.map((item, colIndex) => (
+    const rowItems = row.map((item: any, colIndex) => (
       <Text
         key={`${rowIndex}_${colIndex}`}
         style={{
           flex: 1,
           height: 18,
           textAlign: 'center',
-          // Highlight header
-          // backgroundColor: rowIndex === 0 ? '#ddd' : '#fff',
+
           // Highlight Sundays
           color: colIndex === 0 ? '#a00' : '#000',
           // Highlight current date
