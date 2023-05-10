@@ -1,23 +1,35 @@
+import {
+  Avatar,
+  Box,
+  FlatList,
+  Pressable,
+  Row,
+  ScrollView,
+  Text,
+} from 'native-base';
+import Octicons from 'react-native-vector-icons/Octicons';
+import AntD from 'react-native-vector-icons/AntDesign';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Box, FlatList, Pressable, Row, ScrollView, Text} from 'native-base';
-import AntD from 'react-native-vector-icons/AntDesign';
-import Octicons from 'react-native-vector-icons/Octicons';
+import {View, ListRenderItem} from 'react-native';
+import {ClassCard, DatePicker} from 'components';
 import {useSevenDayRange} from 'hooks';
+import {ClassType} from 'types';
 import moment from 'moment';
-import {View} from 'react-native';
 import {DATA} from 'utils';
-import {DatePicker} from 'components';
 
 const Home = () => {
   const startDate = new Date(); // current date
+  const [MarkDate, setMarkDate] = useState<string>('');
   const [toModalVisible, setToModalVisible] = React.useState(false);
-  const [toSelectedDate, setToSelectedDate] = React.useState<Date>();
+  const [toSelectedDate, setToSelectedDate] = useState<Date | undefined>(
+    undefined,
+  );
   const {dates} = useSevenDayRange(toSelectedDate);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const endDate =
     toSelectedDate &&
-    new Date(toSelectedDate?.getTime() + 7 * 24 * 60 * 60 * 1000);
+    new Date(toSelectedDate?.getTime() + 6 * 24 * 60 * 60 * 1000);
   const [selectedSubjects, setSelectedSubjects] = useState<any>([]);
   const handlePress = (item: any) => {
     setSelectedDate(item);
@@ -34,13 +46,26 @@ const Home = () => {
   useEffect(() => {
     if (selectedDate) {
       setSelectedSubjects(DATA);
-    } else {
-      setSelectedDate(toSelectedDate);
     }
   }, [selectedDate, toSelectedDate]);
+  useEffect(() => {
+    setSelectedDate(toSelectedDate);
+  }, [toSelectedDate]);
+  const handleNextButtonPress = () => {
+    const newDate = toSelectedDate && new Date(toSelectedDate);
+    newDate && newDate.setDate(newDate.getDate() + 6);
+    setToSelectedDate(newDate);
+  };
+  const handlePrevButtonPress = () => {
+    const newDate = toSelectedDate && new Date(toSelectedDate);
+    newDate && newDate.setDate(newDate.getDate() - 6);
+    setToSelectedDate(newDate);
+  };
+  const renderItem: ListRenderItem<ClassType> = ({item}) => {
+    // Render each item here
+    return <ClassCard item={item} />;
+  };
 
-  console.log('selectedDate', selectedDate);
-  console.log(dates[0]);
   return (
     <SafeAreaView style={styles.container}>
       <Box p={5}>
@@ -48,15 +73,21 @@ const Home = () => {
           <Text fontSize={19} bold>
             Timetable
           </Text>
-          <Text alignSelf={'center'} color={'blue.400'}>
-            View Holidays
-          </Text>
+          <Row space={4}>
+            <Text alignSelf={'center'} color={'blue.400'}>
+              View Holidays
+            </Text>
+            <Avatar size={'sm'} bg="purple.200">
+              VS
+            </Avatar>
+          </Row>
         </Row>
         <Row mt={5}>
           <Pressable
             justifyContent={'center'}
             alignItems={'center'}
             w={8}
+            onPress={handlePrevButtonPress}
             bgColor={'#fff'}
             h={9}
             p={1}
@@ -82,6 +113,7 @@ const Home = () => {
             </Text>
           </Pressable>
           <Pressable
+            onPress={handleNextButtonPress}
             justifyContent={'center'}
             alignItems={'center'}
             w={8}
@@ -157,33 +189,13 @@ const Home = () => {
         </ScrollView>
       </Box>
 
-      <FlatList
-        data={selectedSubjects}
-        renderItem={({item}: any) => (
-          <Box
-            borderRadius={5}
-            borderColor={`${item?.color}.900`}
-            borderWidth={0.4}
-            p={3}
-            mt={3}
-            ml={4}
-            mr={4}
-            bgColor={`${item?.color}.100`}>
-            <Row justifyContent={'space-between'}>
-              <Text fontSize={13}>{item?.subject}</Text>
-              <Text color="gray.500" fontSize={12}>
-                {item?.time}
-              </Text>
-            </Row>
-          </Box>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <FlatList data={selectedSubjects} renderItem={renderItem} />
       <DatePicker
         setSelectDate={setToSelectedDate}
-        selectDate={toSelectedDate}
         modalVisible={toModalVisible}
         setModalVisible={setToModalVisible}
+        MarkDate={MarkDate}
+        setMarkDate={setMarkDate}
       />
     </SafeAreaView>
   );

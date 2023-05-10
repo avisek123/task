@@ -5,6 +5,8 @@ export type {
   PrivateStackParams,
   PrivateRootRouteProps,
 } from './allRoutes';
-export type FirebaseErrors = {
-  [key: string]: string;
+export type ClassType = {
+  subject: string;
+  time: string;
+  color: string;
 };
