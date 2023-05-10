@@ -20,7 +20,7 @@ import {DATA} from 'utils';
 
 const Home = () => {
   const startDate = new Date(); // current date
-  const [MarkDate, setMarkDate] = useState<string>('');
+
   const [toModalVisible, setToModalVisible] = React.useState(false);
   const [toSelectedDate, setToSelectedDate] = useState<Date | undefined>(
     undefined,
@@ -37,19 +37,31 @@ const Home = () => {
   const currentDate = moment();
 
   useEffect(() => {
+    let isMount = true;
     if (toSelectedDate) {
       setToSelectedDate(toSelectedDate);
     } else {
       setToSelectedDate(startDate);
     }
+    return () => {
+      isMount = false;
+    };
   }, []);
   useEffect(() => {
+    let isMount = true;
     if (selectedDate) {
       setSelectedSubjects(DATA);
     }
+    return () => {
+      isMount = false;
+    };
   }, [selectedDate, toSelectedDate]);
   useEffect(() => {
+    let isMount = true;
     setSelectedDate(toSelectedDate);
+    return () => {
+      isMount = false;
+    };
   }, [toSelectedDate]);
   const handleNextButtonPress = () => {
     const newDate = toSelectedDate && new Date(toSelectedDate);
@@ -194,8 +206,7 @@ const Home = () => {
         setSelectDate={setToSelectedDate}
         modalVisible={toModalVisible}
         setModalVisible={setToModalVisible}
-        MarkDate={MarkDate}
-        setMarkDate={setMarkDate}
+        selectDate={selectedDate}
       />
     </SafeAreaView>
   );

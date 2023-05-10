@@ -1,28 +1,31 @@
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Box, Divider, HStack, Icon, Text} from 'native-base';
 import {Modal, TouchableOpacity} from 'react-native';
-import {Calendar} from 'react-native-calendars';
-import moment from 'moment';
+import CalendarPicker from 'react-native-calendar-picker';
 import React from 'react';
+import COLORS from 'styles';
 
 interface IDatePicker {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
-  setMarkDate?: React.Dispatch<React.SetStateAction<string>>;
-  MarkDate: string;
+
+  selectDate: any;
 
   setSelectDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }
 const DatePicker = ({
   modalVisible,
   setModalVisible,
-  setMarkDate,
-  MarkDate,
+
+  selectDate,
 
   setSelectDate,
 }: IDatePicker) => {
   const handleClose = () => {
     setModalVisible(false);
+  };
+  const onChange = (date: any, type: any) => {
+    setSelectDate && setSelectDate(new Date(date));
   };
 
   return (
@@ -50,19 +53,36 @@ const DatePicker = ({
             </HStack>
             <Divider />
           </Box>
-          <Calendar
-            minDate={moment().format('YYYY-MM-DD')}
-            onDayPress={day => {
-              setSelectDate && setSelectDate(new Date(day.dateString));
-              setMarkDate && setMarkDate(day.dateString);
-            }}
-            markedDates={{
-              [MarkDate]: {
-                selected: true,
-                disableTouchEvent: true,
-                selectedColor: '#4169e1',
-              },
-            }}
+
+          <CalendarPicker
+            startFromMonday={true}
+            allowRangeSelection={false}
+            minDate={new Date()}
+            // max date should be 7 days from now
+
+            weekdays={['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']}
+            months={[
+              'January',
+              'Febraury',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December',
+            ]}
+            previousTitle="Previous"
+            nextTitle="Next"
+            todayBackgroundColor={COLORS.SECONDARY}
+            selectedDayColor={COLORS.PRIMARY}
+            selectedDayTextColor="#fff"
+            scaleFactor={375}
+            onDateChange={onChange}
+            selectedStartDate={selectDate}
           />
 
           <TouchableOpacity
