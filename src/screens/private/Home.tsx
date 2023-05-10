@@ -94,50 +94,52 @@ const Home = () => {
             </Avatar>
           </Row>
         </Row>
-        <Row alignSelf={'center'} mt={5}>
-          <Pressable
-            justifyContent={'center'}
-            alignItems={'center'}
-            w={8}
-            onPress={handlePrevButtonPress}
-            bgColor={'#fff'}
-            h={9}
-            p={1}
-            borderColor={'gray.300'}
-            borderRightColor={'transparent'}
-            borderRightWidth={0}
-            borderWidth={1}>
-            <AntD name="left" size={15} />
-          </Pressable>
-          <Pressable
-            onPress={() => setToModalVisible(true)}
-            bgColor={'#fff'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            w={'64'}
-            h={9}
-            borderColor={'gray.300'}
-            borderWidth={1}>
-            <Text>
-              {' '}
-              {moment(toSelectedDate).format('Do MMMM')} -{' '}
-              {moment(endDate).format('Do MMMM')}{' '}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={handleNextButtonPress}
-            justifyContent={'center'}
-            alignItems={'center'}
-            w={8}
-            bgColor={'#fff'}
-            h={9}
-            borderColor={'gray.300'}
-            borderLeftColor={'transparent'}
-            borderLeftWidth={0}
-            borderWidth={1}>
-            <AntD name="right" size={15} />
-          </Pressable>
-        </Row>
+        <Box w="100%" mt={5}>
+          <Row>
+            <Pressable
+              justifyContent={'center'}
+              alignItems={'center'}
+              w={'20%'}
+              onPress={handlePrevButtonPress}
+              bgColor={'#fff'}
+              h={9}
+              p={1}
+              borderColor={'gray.300'}
+              borderRightColor={'transparent'}
+              borderRightWidth={0}
+              borderWidth={1}>
+              <AntD name="left" size={18} />
+            </Pressable>
+            <Pressable
+              onPress={() => setToModalVisible(true)}
+              bgColor={'#fff'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              w={'60%'}
+              h={9}
+              borderColor={'gray.300'}
+              borderWidth={1}>
+              <Text>
+                {' '}
+                {moment(toSelectedDate).format('Do MMMM')} -{' '}
+                {moment(endDate).format('Do MMMM')}{' '}
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={handleNextButtonPress}
+              justifyContent={'center'}
+              alignItems={'center'}
+              w={'20%'}
+              bgColor={'#fff'}
+              h={9}
+              borderColor={'gray.300'}
+              borderLeftColor={'transparent'}
+              borderLeftWidth={0}
+              borderWidth={1}>
+              <AntD name="right" size={18} />
+            </Pressable>
+          </Row>
+        </Box>
       </Box>
       <Box>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
