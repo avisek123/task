@@ -89,7 +89,7 @@ const Home = () => {
             <Text alignSelf={'center'} color={'blue.400'}>
               View Holidays
             </Text>
-            <Avatar size={'sm'} bg="purple.200">
+            <Avatar size={'sm'} bg="purple.300">
               VS
             </Avatar>
           </Row>
