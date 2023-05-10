@@ -94,7 +94,7 @@ const Home = () => {
             </Avatar>
           </Row>
         </Row>
-        <Row mt={5}>
+        <Row alignSelf={'center'} mt={5}>
           <Pressable
             justifyContent={'center'}
             alignItems={'center'}
