@@ -1,5 +1,15 @@
 import {Linking, StyleSheet, TouchableOpacity} from 'react-native';
-import {Box, Button, Icon, Image, Progress, Row, Text} from 'native-base';
+import {
+  Avatar,
+  Box,
+  Button,
+  HStack,
+  Icon,
+  Image,
+  Progress,
+  Row,
+  Text,
+} from 'native-base';
 import AntD from 'react-native-vector-icons/AntDesign';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -7,6 +17,7 @@ import React, {useState} from 'react';
 import {Campaign} from 'types';
 import Hyperlink from 'react-native-hyperlink';
 import moment from 'moment';
+import {Alert} from 'react-native';
 
 const CampaignCard = ({item}: {item: Campaign}) => {
   const [expanded, setExpanded] = useState(false);
@@ -31,6 +42,26 @@ const CampaignCard = ({item}: {item: Campaign}) => {
       </>
     );
   };
+  const patronDetails = item?.patrons?.details || [];
+
+  const avatars = patronDetails
+    .filter(detail => detail.user_profile_img)
+    .map(detail => (
+      <TouchableOpacity
+        onPress={() => {
+          Alert.alert(
+            'User Name',
+            `${detail.user_first_name} ${detail.user_last_name}`,
+          );
+        }}>
+        <Avatar
+          key={detail.user_id}
+          source={{uri: detail.user_profile_img}}
+          size={'sm'}
+          mt={1}
+        />
+      </TouchableOpacity>
+    ));
 
   return (
     <Box px={2}>
@@ -97,6 +128,12 @@ const CampaignCard = ({item}: {item: Campaign}) => {
             )}
           </Box>
         )}
+        <Box>
+          <Text fontSize={13} color="gray.400">
+            Parton of this month
+          </Text>
+          <HStack>{avatars}</HStack>
+        </Box>
         <Box mt={2}>
           <Row justifyContent={'space-between'} space={1}>
             <Box
