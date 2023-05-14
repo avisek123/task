@@ -1,17 +1,35 @@
 import {Linking, StyleSheet, TouchableOpacity} from 'react-native';
-import {Box, Button, Icon, Image, Row, Text} from 'native-base';
+import {Box, Button, Icon, Image, Progress, Row, Text} from 'native-base';
 import AntD from 'react-native-vector-icons/AntDesign';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import React, {useState} from 'react';
 import {Campaign} from 'types';
 import Hyperlink from 'react-native-hyperlink';
+import moment from 'moment';
 
 const CampaignCard = ({item}: {item: Campaign}) => {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
+  };
+  const CampaignProgressBar = (collection: number, goal: number) => {
+    const progress = (collection / goal) * 100;
+    return (
+      <>
+        <Progress value={progress} />
+        <Row justifyContent={'space-between'}>
+          <Text fontSize={13} color="gray.400">
+            {' '}
+            Current: ${collection}
+          </Text>
+          <Text fontSize={13} color="gray.400">
+            Goal: ${goal}
+          </Text>
+        </Row>
+      </>
+    );
   };
 
   return (
@@ -65,6 +83,20 @@ const CampaignCard = ({item}: {item: Campaign}) => {
             </TouchableOpacity>
           )}
         </Box>
+        {item?.campaign_collection > 0 && (
+          <Box w="100%" maxW="400">
+            <Row justifyContent={'space-between'}>
+              <Text>{item?.campaign_name}</Text>
+              <Text fontSize={13} color="gray.400">
+                {moment(new Date(item?.campaign_end_date * 1000)).fromNow()}
+              </Text>
+            </Row>
+            {CampaignProgressBar(
+              item?.campaign_collection,
+              item?.campaign_goal,
+            )}
+          </Box>
+        )}
         <Box mt={2}>
           <Row justifyContent={'space-between'} space={1}>
             <Box
