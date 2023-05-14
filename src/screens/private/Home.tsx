@@ -20,7 +20,7 @@ const Home = () => {
     // Render each item here
     return <CampaignCard item={item} />;
   };
-  // console.log('data', data);
+  console.log('data', data);
   useEffect(() => {
     const backAction = () => {
       Alert.alert('Confirm Exit', 'Are you sure you want to exit?', [

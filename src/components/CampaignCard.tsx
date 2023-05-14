@@ -2,13 +2,13 @@ import {Linking, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   Avatar,
   Box,
-  Button,
   HStack,
   Icon,
   Image,
   Progress,
   Row,
   Text,
+  View,
 } from 'native-base';
 import AntD from 'react-native-vector-icons/AntDesign';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -48,18 +48,14 @@ const CampaignCard = ({item}: {item: Campaign}) => {
     .filter(detail => detail.user_profile_img)
     .map(detail => (
       <TouchableOpacity
+        key={detail.user_id}
         onPress={() => {
           Alert.alert(
             'User Name',
             `${detail.user_first_name} ${detail.user_last_name}`,
           );
         }}>
-        <Avatar
-          key={detail.user_id}
-          source={{uri: detail.user_profile_img}}
-          size={'sm'}
-          mt={1}
-        />
+        <Avatar source={{uri: detail.user_profile_img}} size={'sm'} mt={1} />
       </TouchableOpacity>
     ));
 
@@ -84,19 +80,40 @@ const CampaignCard = ({item}: {item: Campaign}) => {
               22 Min
             </Text>
           </Box>
-          <Box
-            p={1}
-            bgColor={'red.500'}
-            position={'absolute'}
-            top={-8}
-            right={-8}>
+          <View
+            style={{
+              width: 0,
+              height: 0,
+
+              position: 'absolute',
+              right: -10,
+              top: -8,
+              justifyContent: 'center',
+              alignItems: 'center',
+
+              backgroundColor: 'transparent',
+              borderStyle: 'solid',
+
+              borderBottomWidth: 50,
+              borderLeftWidth: 50,
+              borderLeftColor: 'transparent',
+              borderBottomColor: `purple`,
+
+              transform: [{rotate: '270deg'}],
+            }}>
             <Icon
-              name="menu-unfold"
-              alignSelf={'center'}
-              as={AntD}
+              position={'absolute'}
+              top={7}
+              left={-25}
+              name={
+                item?.category?.toLowerCase() === 'organization'
+                  ? 'home-city'
+                  : 'home-analytics'
+              }
+              as={MIcon}
               color="#fff"
             />
-          </Box>
+          </View>
         </Row>
         <Box mt={1}>
           <Hyperlink linkStyle={{color: 'blue'}}>
