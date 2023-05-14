@@ -1,223 +1,123 @@
-import {
-  Avatar,
-  Box,
-  FlatList,
-  Pressable,
-  Row,
-  ScrollView,
-  Text,
-} from 'native-base';
-import Octicons from 'react-native-vector-icons/Octicons';
+import {StyleSheet} from 'react-native';
+import React from 'react';
+import {Box, Icon, Image, Row, Text} from 'native-base';
 import AntD from 'react-native-vector-icons/AntDesign';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {View, ListRenderItem} from 'react-native';
-import {ClassCard, DatePicker} from 'components';
-import {useSevenDayRange} from 'hooks';
-import {ClassType} from 'types';
-import moment from 'moment';
-import {DATA} from 'utils';
-
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {Header} from 'components';
 const Home = () => {
-  const startDate = new Date(); // current date
-
-  const [toModalVisible, setToModalVisible] = React.useState(false);
-  const [toSelectedDate, setToSelectedDate] = useState<Date | undefined>(
-    undefined,
-  );
-  const {dates} = useSevenDayRange(toSelectedDate);
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const endDate =
-    toSelectedDate &&
-    new Date(toSelectedDate?.getTime() + 6 * 24 * 60 * 60 * 1000);
-  const [selectedSubjects, setSelectedSubjects] = useState<any>([]);
-  const handlePress = (item: any) => {
-    setSelectedDate(item);
-  };
-  const currentDate = moment();
-
-  useEffect(() => {
-    let isMount = true;
-    if (toSelectedDate) {
-      setToSelectedDate(toSelectedDate);
-    } else {
-      setToSelectedDate(startDate);
-    }
-    return () => {
-      isMount = false;
-    };
-  }, []);
-  useEffect(() => {
-    let isMount = true;
-    if (selectedDate) {
-      setSelectedSubjects(DATA);
-    }
-    return () => {
-      isMount = false;
-    };
-  }, [selectedDate, toSelectedDate]);
-  useEffect(() => {
-    let isMount = true;
-    setSelectedDate(toSelectedDate);
-    return () => {
-      isMount = false;
-    };
-  }, [toSelectedDate]);
-  const handleNextButtonPress = () => {
-    const newDate = toSelectedDate && new Date(toSelectedDate);
-    newDate && newDate.setDate(newDate.getDate() + 6);
-    setToSelectedDate(newDate);
-  };
-  const handlePrevButtonPress = () => {
-    const newDate = toSelectedDate && new Date(toSelectedDate);
-    newDate && newDate.setDate(newDate.getDate() - 6);
-    setToSelectedDate(newDate);
-  };
-  const renderItem: ListRenderItem<ClassType> = ({item}) => {
-    // Render each item here
-    return <ClassCard item={item} />;
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <Box p={5}>
-        <Row justifyContent={'space-between'}>
-          <Text fontSize={19} bold>
-            Timetable
-          </Text>
-          <Row space={4}>
-            <Text alignSelf={'center'} color={'blue.400'}>
-              View Holidays
-            </Text>
-            <Avatar size={'sm'} bg="purple.300">
-              VS
-            </Avatar>
-          </Row>
-        </Row>
-        <Box w="100%" mt={5}>
+    <Box flex={1} safeArea>
+      <Header />
+      <Box p={4}>
+        <Box p={2} mt={5} bgColor={'#fff'}>
           <Row>
-            <Pressable
-              justifyContent={'center'}
-              alignItems={'center'}
-              w={'20%'}
-              onPress={handlePrevButtonPress}
-              bgColor={'#fff'}
-              h={9}
-              p={1}
-              borderColor={'gray.300'}
-              borderRightColor={'transparent'}
-              borderRightWidth={0}
-              borderWidth={1}>
-              <AntD name="left" size={18} />
-            </Pressable>
-            <Pressable
-              onPress={() => setToModalVisible(true)}
-              bgColor={'#fff'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              w={'60%'}
-              h={9}
-              borderColor={'gray.300'}
-              borderWidth={1}>
-              <Text>
-                {' '}
-                {moment(toSelectedDate).format('Do MMMM')} -{' '}
-                {moment(endDate).format('Do MMMM')}{' '}
+            <Image
+              alt=""
+              resizeMode="contain"
+              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80"
+              w={'12'}
+              h={12}
+              style={{borderRadius: 3}}
+            />
+            <Box flex={1} ml={4}>
+              <Text>Political Organization</Text>
+              <Text fontSize={13} color="gray.400">
+                22 Min
               </Text>
-            </Pressable>
-            <Pressable
-              onPress={handleNextButtonPress}
-              justifyContent={'center'}
-              alignItems={'center'}
-              w={'20%'}
-              bgColor={'#fff'}
-              h={9}
-              borderColor={'gray.300'}
-              borderLeftColor={'transparent'}
-              borderLeftWidth={0}
-              borderWidth={1}>
-              <AntD name="right" size={18} />
-            </Pressable>
+            </Box>
+            <Box
+              p={1}
+              bgColor={'red.500'}
+              position={'absolute'}
+              top={-8}
+              right={-8}>
+              <Icon
+                name="menu-unfold"
+                alignSelf={'center'}
+                as={AntD}
+                color="#fff"
+              />
+            </Box>
           </Row>
+          <Box mt={1}>
+            <Text textAlign={'justify'}>
+              In publishing and graphic design, Lorem ipsum is a placeholder
+              text commonly used to demonstrate the visual form of a document or
+              a typeface without relying on meaningful content
+            </Text>
+          </Box>
+          <Box mt={2}>
+            <Row justifyContent={'space-between'} space={1}>
+              <Box
+                justifyContent={'center'}
+                w={6}
+                h={6}
+                borderRadius={100}
+                bgColor={'yellow.400'}>
+                <Icon
+                  name="menu-unfold"
+                  alignSelf={'center'}
+                  color="#fff"
+                  as={AntD}
+                />
+              </Box>
+              <Text color="gray.400" alignSelf={'center'} fontSize={12}>
+                Donate
+              </Text>
+              <Box
+                justifyContent={'center'}
+                w={6}
+                h={6}
+                borderRadius={100}
+                bgColor={'red.500'}>
+                <Icon
+                  name="cards-heart"
+                  alignSelf={'center'}
+                  color="#fff"
+                  as={MIcon}
+                />
+              </Box>
+              <Text color="gray.400" alignSelf={'center'} fontSize={12}>
+                122 Likes
+              </Text>
+              <Box
+                justifyContent={'center'}
+                w={6}
+                h={6}
+                borderRadius={100}
+                bgColor={'cyan.500'}>
+                <Icon
+                  name="comment-processing-outline"
+                  alignSelf={'center'}
+                  color="#fff"
+                  as={MIcon}
+                />
+              </Box>
+              <Text color="gray.400" alignSelf={'center'} fontSize={12}>
+                123 Comments
+              </Text>
+              <Box
+                justifyContent={'center'}
+                w={6}
+                h={6}
+                borderRadius={100}
+                bgColor={'gray.400'}>
+                <Icon
+                  name="dots-three-horizontal"
+                  alignSelf={'center'}
+                  color="#fff"
+                  as={Entypo}
+                />
+              </Box>
+            </Row>
+          </Box>
         </Box>
       </Box>
-      <Box>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <Row>
-            {dates?.map((item, index) => (
-              <View style={{marginHorizontal: 10}} key={index}>
-                <Pressable
-                  onPress={() => handlePress(item)}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  w={'10'}
-                  borderRadius={90}
-                  h={'16'}
-                  bgColor={
-                    moment(item).isSame(selectedDate, 'day')
-                      ? '#4169e1'
-                      : 'gray.200'
-                  }>
-                  <Box alignItems={'center'}>
-                    <Text
-                      color={
-                        moment(item).isSame(selectedDate, 'day')
-                          ? '#fff'
-                          : '#000'
-                      }
-                      fontSize={12}>
-                      {moment(item).format('ddd')}
-                    </Text>
-                    <Box
-                      borderRadius={100}
-                      h={5}
-                      mt={1}
-                      w={5}
-                      alignItems={'center'}
-                      p={0.8}
-                      bgColor={
-                        moment(item).isSame(selectedDate, 'day') ? '#fff' : null
-                      }>
-                      <Text
-                        color={
-                          moment(item).isSame(selectedDate, 'day')
-                            ? '#4169e1'
-                            : '#000'
-                        }
-                        fontSize={13}>
-                        {moment(item).format('DD')}
-                      </Text>
-                    </Box>
-                  </Box>
-                </Pressable>
-                {moment(item).isSame(currentDate, 'day') ? (
-                  <Octicons
-                    color="#4169e1"
-                    style={{alignSelf: 'center'}}
-                    name="dot-fill"
-                  />
-                ) : null}
-              </View>
-            ))}
-          </Row>
-        </ScrollView>
-      </Box>
-
-      <FlatList data={selectedSubjects} renderItem={renderItem} />
-      <DatePicker
-        setSelectDate={setToSelectedDate}
-        modalVisible={toModalVisible}
-        setModalVisible={setToModalVisible}
-        selectDate={selectedDate}
-      />
-    </SafeAreaView>
+    </Box>
   );
 };
 
 export default Home;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const styles = StyleSheet.create({});
