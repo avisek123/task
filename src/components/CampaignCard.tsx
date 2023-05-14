@@ -29,7 +29,7 @@ const CampaignCard = ({item}: {item: Campaign}) => {
     const progress = (collection / goal) * 100;
     return (
       <>
-        <Progress value={progress} />
+        <Progress colorScheme={'yellow'} value={progress} />
         <Row justifyContent={'space-between'}>
           <Text fontSize={13} color="gray.400">
             {' '}
@@ -97,7 +97,11 @@ const CampaignCard = ({item}: {item: Campaign}) => {
               borderBottomWidth: 50,
               borderLeftWidth: 50,
               borderLeftColor: 'transparent',
-              borderBottomColor: `purple`,
+              borderBottomColor: `${
+                item?.category?.toLowerCase() === 'organization'
+                  ? 'cyan'
+                  : 'purple'
+              }`,
 
               transform: [{rotate: '270deg'}],
             }}>
@@ -183,7 +187,7 @@ const CampaignCard = ({item}: {item: Campaign}) => {
               />
             </Box>
             <Text color="gray.400" alignSelf={'center'} fontSize={12}>
-              122 Likes
+              {item?.likes_count} Likes
             </Text>
             <Box
               justifyContent={'center'}
@@ -199,7 +203,7 @@ const CampaignCard = ({item}: {item: Campaign}) => {
               />
             </Box>
             <Text color="gray.400" alignSelf={'center'} fontSize={12}>
-              123 Comments
+              {item.comments_count} Comments
             </Text>
             <Box
               justifyContent={'center'}

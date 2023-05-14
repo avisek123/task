@@ -50,6 +50,7 @@ const Home = () => {
         </Center>
       ) : (
         <FlatList
+          initialNumToRender={5}
           data={data?.data}
           refreshControl={
             <RefreshControl
@@ -58,6 +59,7 @@ const Home = () => {
             />
           }
           renderItem={renderItem}
+          ListFooterComponent={<Box mb={3}></Box>}
         />
       )}
     </Box>
