@@ -1,4 +1,4 @@
-import {Linking, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   Avatar,
   Box,
