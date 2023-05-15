@@ -18,8 +18,6 @@ module.exports = {
           layouts: './src/layouts',
           constants: './src/constants',
           styles: './src/styles',
-          features: './src/features',
-          services: './src/services',
         },
       },
     ],

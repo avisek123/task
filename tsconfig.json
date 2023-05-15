@@ -71,14 +71,7 @@
       "types": [
         "src/types"
       ],
-      "features":[
-        "src/features"
       
-      ],
-      "services":[
-        "src/services"
-      
-      ],
      
      
       
