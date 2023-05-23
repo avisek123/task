@@ -5,7 +5,7 @@ const useCampaign = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await fetch(
         'http://protobake.com/protobak_star2/feed_data.json',
